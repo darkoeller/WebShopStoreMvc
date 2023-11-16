@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShopStoreMvc01.Data;
 
@@ -11,9 +12,10 @@ using WebShopStoreMvc01.Data;
 namespace WebShopStoreMvc01.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116171953_dodanFKuAppUser")]
+    partial class dodanFKuAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,24 +241,6 @@ namespace WebShopStoreMvc01.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WebShopStoreMvc01.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("WebShopStoreMvc01.Models.OrderItem", b =>
                 {
                     b.Property<int>("Id")
@@ -280,8 +264,6 @@ namespace WebShopStoreMvc01.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
                 });
@@ -382,58 +364,7 @@ namespace WebShopStoreMvc01.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("WebShopStoreMvc01.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(9,2)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("WebShopStoreMvc01.Models.ProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCategory");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -494,12 +425,6 @@ namespace WebShopStoreMvc01.Data.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("WebShopStoreMvc01.Models.Product", null)
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebShopStoreMvc01.Models.Orders", b =>
@@ -511,41 +436,14 @@ namespace WebShopStoreMvc01.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebShopStoreMvc01.Models.ProductCategory", b =>
-                {
-                    b.HasOne("WebShopStoreMvc01.Models.Category", null)
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebShopStoreMvc01.Models.Product", null)
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WebShopStoreMvc01.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("WebShopStoreMvc01.Models.Category", b =>
-                {
-                    b.Navigation("ProductCategories");
-                });
-
             modelBuilder.Entity("WebShopStoreMvc01.Models.Orders", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("WebShopStoreMvc01.Models.Product", b =>
-                {
-                    b.Navigation("OrderItems");
-
-                    b.Navigation("ProductCategories");
                 });
 #pragma warning restore 612, 618
         }
